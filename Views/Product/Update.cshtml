@@ -1,0 +1,68 @@
+@model DuAnThuongMaiDienTu.Models.Product
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ImageUrl" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Name">Tên sản phẩm</label>
+                <input asp-for="Name" class="form-control" value="laptop" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Giá</label>
+                <input asp-for="Price" class="form-control" value="3000.00" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Mô tả</label>
+                <textarea asp-for="Description" class="form-control">vreye</textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId">Danh mục</label>
+                <select asp-for="CategoryId" asp-items="@ViewBag.Categories" class="form-control">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageUrl">Hình ảnh sản phẩm</label>
+                <input type="file" name="imageUrl" class="form-control" id="imageInput" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Lưu</button>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Ảnh hiện tại / Xem trước:</label>
+                <div>
+                    <img src="@Model.ImageUrl" alt="Product Image" style="max-width: 300px; max-height: 300px;" id="previewImage" class="img-thumbnail" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('previewImage').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
