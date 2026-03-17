@@ -1,0 +1,64 @@
+@model IEnumerable<DuAnThuongMaiDienTu.Models.Product>
+
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<h2>Danh sách sản phẩm</h2>
+
+<p>
+    <a asp-action="Add" class="btn btn-primary">Thêm sản phẩm mới</a>
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Chưa có sản phẩm nào trong database.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Mô tả</th>
+                <th>Hình ảnh</th>
+                <th>Danh mục</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price.ToString("N0") đ</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="@item.Name" style="max-width: 50px; max-height: 50px;" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Chưa có ảnh</span>
+                        }
+                    </td>
+                    <td>@item.Category?.Name</td>
+                    <td>
+                        <a asp-action="Display" asp-route-id="@item.Id" class="btn btn-info btn-sm">View</a>
+                        <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Thêm phần debug để xem dữ liệu -->
+<div class="alert alert-secondary mt-3">
+    <strong>Debug:</strong> Tìm thấy @Model.Count() sản phẩm
+</div>
